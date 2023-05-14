@@ -1,0 +1,57 @@
+.chat__sidebar{
+    border: 1px solid red;
+    height: 80vh;
+    width: 30%;
+    padding: 20px;
+    position: fixed;
+}
+#chat__search {
+    padding-left: 30px;
+    background-image: url('../../public/search.png');
+    background-repeat: no-repeat;
+    background-size: 20px;
+    background-position: 5px center;
+}
+.chat__messages__sent__wrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.5rem 0;
+    cursor: pointer;
+}
+.chat__message__user__info{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.chat__message__user__info__wrapper{
+    min-width: 80%;
+    border-bottom: 2px solid #C1C5C8;
+}
+.chat__profile__image{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    margin: 0.5rem 0;
+}
+.chat__message__history{
+    width: 15px;
+    height: 15px;
+    margin: 0 0.5rem;
+}
+.chat__message__sidebar{
+    display: inline-block;
+    padding-bottom: 1rem;
+    color: #C1C5C8;
+    max-width: 100%;
+    max-height: 10px !important;
+    overflow: hidden !important;
+}
+.chat__user__name{
+    padding: 0 0 0.5rem 0;
+    margin: 0;
+    color: #80D495;
+    font-weight: 500;
+}
