@@ -20,7 +20,6 @@ const ChatGPTUI = () => {
     socket.on('connect', () => {
       console.log('Connected to server');
     });
-
     socket.on('userList', (data) => {
       console.log('User list received: ' + data);
       setUserList(data);

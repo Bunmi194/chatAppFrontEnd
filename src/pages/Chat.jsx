@@ -1,76 +1,83 @@
-import React from 'react';
-import { Container, Row, Col, Form, InputGroup, FormControl, Button, Navbar, Nav, Dropdown } from 'react-bootstrap';
+import React, { useState, useEffect, useRef } from 'react';
+import io from 'socket.io-client';
+import { v4 as uuid } from "uuid";
 
-const ChatDashboard = () => {
+
+function Chat() {
+  const [message, setMessage] = useState('');
+  const [recipientId, setRecipientId] = useState('');
+  
+  const socket = useRef();
+  const userIdRef = useRef(null);
+  let newUserId;
+  
+  const newId = useRef(uuid()).current;
+  let id;
+
+  useEffect(()=>{
+    id = newId;
+    socket.current = io('http://localhost:4000');
+    console.log("socket: ", socket.current);
+  }, []);
+  
+  useEffect(() => {
+    // get user ID from local storage or generate a new one
+    localStorage.removeItem("userId");
+    const storedUserId = localStorage.getItem('userId');
+    console.log("storedUserId: ", storedUserId);
+    if (storedUserId) {
+      userIdRef.current = storedUserId;
+    } else {
+      newUserId = id;
+      console.log("newUserId: ", newUserId);
+      userIdRef.current = newUserId;
+      localStorage.setItem('userId', newUserId);
+    }
+
+    // listen for incoming messages
+    socket.current.on(`message:${userIdRef.current}`, (data) => {
+      console.log(`Message received: ${data.content}`);
+      // handle the incoming message
+    });
+    socket.current.on("userList", (data) => {
+      console.log(data);
+    })
+    socket.current.on("welcome", (data) => {
+      console.log(data);
+    })
+    socket.current.on("privateMessage", (data) => {
+      console.log("private message", data);
+    });
+
+    socket.current.emit('join', newUserId)
+    return ()=>{
+      socket.current.off(`message:${userIdRef.current}`, (data) => {
+        console.log(`Message received: ${data.content}`);
+        // handle the incoming message
+      });
+    }
+  }, []);
+  
+  const sendMessage = () => {
+    // construct message object
+    const messageObject = {
+      sender: userIdRef.current,
+      recipient: recipientId,
+      content: message,
+    };
+
+    // send message to server
+    socket.current.emit('message', messageObject);
+  };
+
   return (
-    <>
-      <Navbar bg="light">
-        <Navbar.Brand>
-          <img
-            src="your-logo-image-source"
-            height="30"
-            className="d-inline-block align-top"
-            alt="Chat Dashboard logo"
-          />
-        </Navbar.Brand>
-        <Nav className="mr-auto">
-          <Form inline>
-            <InputGroup>
-              <FormControl type="text" placeholder="Search users" />
-              <InputGroup.Append>
-                <Button variant="outline-secondary">Search</Button>
-              </InputGroup.Append>
-            </InputGroup>
-          </Form>
-        </Nav>
-        <Dropdown>
-          <Dropdown.Toggle variant="success" id="dropdown-basic">
-            User Profile
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            <Dropdown.Item href="#/action-1">Settings</Dropdown.Item>
-            <Dropdown.Item href="#/action-2">Log out</Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      </Navbar>
-      <Container fluid>
-        <Row>
-          <Col xs={12} md={4}>
-            <div className="users-container">
-              <h2>Users</h2>
-              <ul>
-                <li>User 1</li>
-                <li>User 2</li>
-                <li>User 3</li>
-                <li>User 4</li>
-              </ul>
-            </div>
-          </Col>
-          <Col xs={12} md={8}>
-            <div className="chat-container">
-              <h2>Chat</h2>
-              <div className="messages-container">
-                <ul>
-                  <li>Message 1</li>
-                  <li>Message 2</li>
-                  <li>Message 3</li>
-                  <li>Message 4</li>
-                </ul>
-              </div>
-              <Form>
-                <InputGroup>
-                  <FormControl type="text" placeholder="Type your message here" />
-                  <InputGroup.Append>
-                    <Button variant="primary" type="submit">Send</Button>
-                  </InputGroup.Append>
-                </InputGroup>
-              </Form>
-            </div>
-          </Col>
-        </Row>
-      </Container>
-    </>
+    <div>
+      <h1>Chat App</h1>
+      <input type="text" placeholder="Recipient ID" value={recipientId} onChange={(e) => setRecipientId(e.target.value)} />
+      <input type="text" placeholder="Message" value={message} onChange={(e) => setMessage(e.target.value)} />
+      <button onClick={sendMessage}>Send Message</button>
+    </div>
   );
-};
+}
 
-export default ChatDashboard;
+export default React.memo(Chat);
