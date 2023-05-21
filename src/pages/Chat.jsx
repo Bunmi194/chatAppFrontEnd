@@ -40,6 +40,7 @@ function Chat() {
       // handle the incoming message
     });
     socket.current.on("userList", (data) => {
+      //receiving array of objects from server containing userId and socketId
       console.log(data);
     })
     socket.current.on("welcome", (data) => {

@@ -11,6 +11,17 @@
     background-repeat: no-repeat;
     background-size: 20px;
     background-position: 5px center;
+    width: 80%;
+    display: inline-block;
+    margin-right: 10px;
+}
+.chat__btn__go{
+    font-weight: bold;
+}
+.chat__list__wrapper{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid red;
 }
 .chat__messages__sent__wrapper{
     display: flex;
@@ -19,6 +30,7 @@
     align-items: center;
     margin: 0.5rem 0;
     cursor: pointer;
+    border: 1px solid red;
 }
 .chat__message__user__info{
     display: flex;

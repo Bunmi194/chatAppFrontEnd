@@ -1,0 +1,54 @@
+.verification-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f1f1f1;
+  }
+  .chat__signupmessage{
+    font-weight: bold;
+    color: #62D245;
+  }
+  .verification-message-content {
+    text-align: center;
+    width: 50%;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  .chat__mail__redirect{
+    text-decoration: none;
+    display: inline-block;
+    width: 10rem !important;
+    padding: 20px;
+    color: #fff;
+    background-color: #62D245;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .app-logo {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .app-name {
+    font-size: 24px;
+    margin-bottom: 1rem;
+  }
+  .chat__account__verified{
+    width: 80px;
+    height: 80px;
+  }
+  .verification-text {
+    font-size: 16px;
+    color: #666;
+  }
+  .chat__loader{
+    width: 100px;
+    height: 100px;
+    margin: auto;
+  }
+  .hide{
+    display: none;
+  }

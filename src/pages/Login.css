@@ -6,9 +6,16 @@
     height: 100vh;
     background-color: #f7f7f7;
   }
+  .chat__header{
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
   
   .login-image {
-    background-image: url('https://source.unsplash.com/random');
+    background-image: url('/public/bgg.jpg');
     background-size: cover;
     background-position: center;
     width: 100%;
@@ -25,6 +32,47 @@
     max-width: 400px;
   }
   
+  .chat__btnlogin{
+    width: 100%;
+    font-weight: bold;
+  }
+  .chat__or__block{
+    display: flex;
+    flex-direction: row;
+  }
+  .chat__line__div{
+    width: 50%;
+    border-top: 2px solid rgb(156, 144, 144);
+    margin-top: 2rem;
+  }
+  .chat__or__text{
+    padding-top: 1.5rem;
+    margin: 0 10px;
+  }
+  .chat__btnlogin__google{
+    width: 100%;
+    height: 100%;
+    background: url('/public/google.png') no-repeat left center;
+    background-size: 10%;
+    color: red;
+    background-color: rgb(206, 193, 193);
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 30px;
+  }
+  .chat__btnlogin__google:hover{
+    background-color: beige;
+  }
+  .chat__redirect__text{
+    text-align: center;
+    font-weight: bold;
+  }
+  .chat__redirect__text a{
+    text-decoration: none;
+  }
+  .chat__login__loader{
+    display: inline-block;
+  }
   @media screen and (min-width: 768px) {
     .login-container {
       flex-direction: row;

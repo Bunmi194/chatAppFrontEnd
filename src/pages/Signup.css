@@ -8,7 +8,7 @@
   }
   
   .login-image {
-    background-image: url('https://source.unsplash.com/random');
+    background-image: url('/public/bgg.jpg');
     background-size: cover;
     background-position: center;
     width: 100%;
@@ -23,6 +23,14 @@
     padding: 20px;
     margin: 20px;
     max-width: 400px;
+  }
+
+  .chat__redirect__text{
+    text-align: center;
+    font-weight: bold;
+  }
+  .chat__redirect__text a{
+    text-decoration: none;
   }
   
   @media screen and (min-width: 768px) {
