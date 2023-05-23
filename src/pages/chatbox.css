@@ -8,6 +8,23 @@
     height: 80vh;
     border: 2px solid red;
   }
+  .chat__nochat{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .chat__nochat span{
+    display: inline-block;
+    text-align: center;
+    margin: 1rem 2rem 5rem;
+    color: red;
+    font-weight: bold;
+  }
+  .chat__nochat img{
+    width: 120px;
+    height: 120px;
+  }
  .chat__overall__container{
   display: flex;
   flex-direction: row;

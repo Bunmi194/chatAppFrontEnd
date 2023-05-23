@@ -15,21 +15,69 @@ const timeFormatOptions = {
   hour12: true
 };
 
-const SideBar = ({ receiverId, setReceiverId, activeUser, setMessages, receivedMessages, usersList, setUsersList, getAllMessages, setGetAllMessages }) => {
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+`;
+
+const SideBar = ({ receiverId, setReceiverId, activeUser, setMessages, receivedMessages, usersList, setUsersList, getAllMessages, setGetAllMessages, activeNames, setActiveNames, messageStatus, setMessageStatus }) => {
   const [searchEmail, setSearchEmail] = useState("");
-
+  const [ searchLoading, setSearchLoading] = useState(false);
   let userDetails;
-
-  const updateReceiverDetails = (myUsers, messages) => {
+  
+  const updateReceiverDetails = async (myUsers, messages, firstName, lastName) => {
     //make fetchmessages run on every click to update messages with what's in the database
     console.log("user: ", myUsers);
     console.log("messages Update: ", messages);
+    console.log("getAllMessages Update: ", getAllMessages);
     setReceiverId(myUsers);
+    setActiveNames(`${firstName} ${lastName}`);
+    setMessageStatus(true);
     const activeMessages = getAllMessages.find(message => message._id === myUsers);
     if(activeMessages){
       const displayMessages = [...activeMessages.messages].reverse();
+      console.log("displayMessages1: ", displayMessages)
       setMessages(displayMessages);
     } 
+
+    if(userDetails){
+      const token = userDetails.token;
+      const messages = await fetch(`http://localhost:4000/v1/chats`, {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "authorization": `Bearer ${token}`
+        }
+      });
+      const result = await messages.json();
+      
+      console.log("result ON CLICK: ", result);
+      // if(result.messages){
+      //   setGetAllMessages([...result.messages]);
+        
+      //   const activeMessages = getAllMessages.find(message => message._id === myUsers);
+        
+      //   console.log("result ON CLICK for activeMessages: ", activeMessages);
+      //   if(activeMessages){
+      //     const displayMessages = [...activeMessages.messages].reverse();
+      //     console.log("displayMessages2: ", displayMessages)
+      //     setMessages(displayMessages);
+      //   } 
+      // }
+      if (result.messages) {
+        setGetAllMessages(prevMessages => {
+          const activeMessages = result.messages.find(message => message._id === myUsers);
+          if (activeMessages) {
+            const displayMessages = [...activeMessages.messages].reverse();
+            setMessages(displayMessages);
+          }
+          return [...result.messages];
+        });
+      }
+    
+    }
     // const reverseMessages = [...result.messages[0].messages]
     // //takes -messages- and -setMessages-
     // setMessages([
@@ -38,6 +86,7 @@ const SideBar = ({ receiverId, setReceiverId, activeUser, setMessages, receivedM
     // ])
     // alert(receiverId);
     // return;
+    // updateReceiverDetails(myUsers, messages, firstName, lastName)
   }
 
   const today = (dateString) => {
@@ -45,10 +94,12 @@ const SideBar = ({ receiverId, setReceiverId, activeUser, setMessages, receivedM
   };
 
   const searchUser = async (searchObject) => {
+    setSearchLoading(true);
     if (!searchEmail && !activeUser.senderId) {
       toast.error("Email is required", {
         position: toast.POSITION.TOP_RIGHT,
       });
+      setSearchLoading(false);
       return;
     }
     const users = await fetch("http://localhost:4000/v1/users/search", {
@@ -66,6 +117,7 @@ const SideBar = ({ receiverId, setReceiverId, activeUser, setMessages, receivedM
       toast.error(`Error: ${result.status}`, {
         position: toast.POSITION.TOP_RIGHT,
       });
+      setSearchLoading(false);
       return;
     }
     // const existingUsers = [...usersList];
@@ -75,8 +127,12 @@ const SideBar = ({ receiverId, setReceiverId, activeUser, setMessages, receivedM
         ...usersList,
         result.user[0]
     ]);
+    setSearchLoading(false);
   };
 
+  useEffect(()=>{
+
+  }, [receivedMessages])
   useEffect(()=>{
     //senderId
 
@@ -94,23 +150,25 @@ const SideBar = ({ receiverId, setReceiverId, activeUser, setMessages, receivedM
   }, [activeUser]);
 
   const fetchmessages = async () => {
-    const token = userDetails.token;
-    const messages = await fetch(`http://localhost:4000/v1/chats`, {
-      method: 'GET',
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-        "authorization": `Bearer ${token}`
+    if(userDetails){
+      const token = userDetails.token;
+      const messages = await fetch(`http://localhost:4000/v1/chats`, {
+        method: 'GET',
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+          "authorization": `Bearer ${token}`
+        }
+      });
+      const result = await messages.json();
+      console.log("result: ", result);
+      if(result.messages){
+        setUsersList([
+          ...usersList,
+          ...result.messages
+        ]);
+        setGetAllMessages([...result.messages]);
       }
-    });
-    const result = await messages.json();
-    console.log("result: ", result);
-    if(result.messages){
-      setUsersList([
-        ...usersList,
-        ...result.messages
-      ]);
-      setGetAllMessages([...result.messages]);
     }
     // console.log("result.messages.messages: ", result.messages[0].messages);
     // console.log("receivedMessages: ", receivedMessages);
@@ -123,8 +181,11 @@ const SideBar = ({ receiverId, setReceiverId, activeUser, setMessages, receivedM
     //fetch all messages
     fetchmessages();
     
-  }, [])
+  }, [userDetails]);
+
   console.log("usersList: ", usersList);
+  console.log("receivedMessages: ", receivedMessages);
+  console.log("createdAt1: ", receivedMessages[receivedMessages.length - 1]);
   return (
     <div className="chat__sidebar">
       <input
@@ -139,9 +200,23 @@ const SideBar = ({ receiverId, setReceiverId, activeUser, setMessages, receivedM
       {/* profile of sent messages */}
       <div className="chat__list__wrapper">
         {
+          searchLoading?
+          <div className="chat__sidebar__spinner">
+            <ClipLoader color="#000" loading={true} css={override} size={50} />
+          </div>
+          :
+        !usersList.length ? 
+        <div className="chat__nouser">
+          <div>
+            <span>No User Found</span>
+          </div>
+          <div>
+            <img src="/users-avatar.png" alt="no user found"/></div>
+          </div>
+        : 
         usersList &&
           usersList.map((myUsers) => (
-            <div className="chat__messages__sent__wrapper" onClick={()=>{updateReceiverDetails(myUsers._id, myUsers.messages)}} key={myUsers._id}>
+            <div className="chat__messages__sent__wrapper" onClick={()=>{updateReceiverDetails(myUsers._id, myUsers.messages, myUsers.user? myUsers.user.firstName : myUsers.firstName, myUsers.user? myUsers.user.lastName : myUsers.lastName)}} key={myUsers._id}>
             <>
               <div className="">
                 {/* image */}
@@ -157,23 +232,24 @@ const SideBar = ({ receiverId, setReceiverId, activeUser, setMessages, receivedM
                 <div className="chat__message__user__info">
                   <div>
                     {/* name */}
-                    <h3 className="chat__user__name">{myUsers.name? myUsers.name : `${myUsers.user.firstName} ${myUsers.user.lastName}`}</h3>
+                    <h3 className="chat__user__name">{myUsers.user? `${myUsers.user.firstName} ${myUsers.user.lastName}` : `${myUsers.firstName} ${myUsers.lastName}`}</h3>
                   </div>
                   <div>
                     {/* time */}
-                    {myUsers.user.createdAt? <img
+                    {myUsers.user || myUsers.createdAt ? <img
                       src="/history.png"
                       alt="time"
                       className="chat__message__history"
                     />
                 :
                 ""}
-                    {!myUsers.user.createdAt? "" : today(myUsers.user.createdAt)?new Date(myUsers.user.createdAt).toLocaleString('en-us', timeFormatOptions) : new Date(myUsers.user.createdAt).toLocaleString('en-us', dateFormatOptions)}
+                    {!receivedMessages.length > 0 ? today(myUsers.createdAt || myUsers.user.createdAt)?new Date(myUsers.createdAt || myUsers.user.createdAt).toLocaleString('en-us', timeFormatOptions) : new Date(myUsers.createdAt || myUsers.user.createdAt).toLocaleString('en-us', dateFormatOptions) : today(receivedMessages[receivedMessages.length - 1].createdAt) ? new Date(receivedMessages[receivedMessages.length - 1].createdAt).toLocaleString('en-us', timeFormatOptions) :
+                    new Date(receivedMessages[receivedMessages.length - 1].createdAt).toLocaleString('en-us', dateFormatOptions)}
                   </div>
                 </div>
                 {/* message */}
                 <span className="chat__message__sidebar">
-                {myUsers.messages[0].content? myUsers.messages[0].content : ""}
+                {myUsers.messages? myUsers.messages[0].content : "" }
                 </span>
               </div>
             </>

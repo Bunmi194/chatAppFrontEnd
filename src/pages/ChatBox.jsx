@@ -26,7 +26,9 @@ const today = (dateString) => {
 const ChatBox = () => {
 
   const [room, setRoom] = useState('');
-  const [ status, setStatus] = useState(false)
+  const [ status, setStatus] = useState(false);
+  const [ messageStatus, setMessageStatus] = useState(false);
+  const [ activeNames, setActiveNames] = useState('');
   const [username, setUsername] = useState(''); 
   const [usersList, setUsersList] = useState([]);
   const [message, setMessage] = useState('');
@@ -98,29 +100,10 @@ const ChatBox = () => {
           receiverId: data.receiverId,
           createdAt: data.createdAt,
           message: data.message,
+          content: data.message
         },
       ]);
-      setStatus(true)
-      //update usersList and getAllMessages
-      // if(usersList.length > 0){
-      //   console.log("GREATER usersList")
-      //   const newUsersList = usersList.find(user => user.user._id === data.receiverId);
-      // newUsersList.messages = [...newUsersList.messages, ...data];
-      // usersList[usersList.indexOf(newUsersList)].messages = newUsersList.messages;
-      // setUsersList([
-      //   ...usersList,
-      // ]);
-      // }
-
-      // if(getAllMessages.length > 0){
-      //   console.log("GREATER")
-      //   const newMessage = getAllMessages.find(message => message.user._id === data.receiverId);
-      //   newMessage.messages = [...newMessage.messages, ...data];
-      //   getAllMessages[getAllMessages.indexOf(newMessage)].messages = newMessage.messages;
-      //   setGetAllMessages([
-      //     ...getAllMessages,
-      //   ]);
-      // }
+      setStatus(true);
       console.log("all messages from socket: ", getAllMessages);
       console.log("usersList from socket: ", usersList);
       console.log("messages from socket: ", messages);
@@ -148,18 +131,22 @@ const ChatBox = () => {
   //   socket.current.emit('message', messageObject);
   // };
 
-  const handleMessageSend = (e) => {
+  const handleMessageSend = async (e) => {
     e.preventDefault();
     console.log("messages: ", messages);
+    console.log("message: ", message);
+    if(!message){
+      return;
+    }
     const newMessage = {
       id: uuid(),
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
       senderId: userDetails.userExists[0]._id,
       receiverId,
       message,
+      content: message,
       name: "You"
     };
-    alert(receiverId)
     // send message to server
     console.log("messages: ", messages)
     console.log("typeof messages: ", typeof messages)
@@ -168,6 +155,21 @@ const ChatBox = () => {
     setMessages(newArray);
     setMessage("");
     socket.current.emit('message', newMessage);
+    const token = userDetails.token;
+    fetch("http://localhost:4000/v1/chats", {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        "authorization": `Bearer ${token}`,
+        "Access-Control-Allow-Origin": "*"
+      },
+      body: JSON.stringify({
+        senderId: newMessage.senderId,
+        recipientId: newMessage.receiverId,
+        content: newMessage.content,
+        delivered: false
+      })
+    });
     // if (message) {
     //   const data = {
     //     room,
@@ -188,47 +190,33 @@ const ChatBox = () => {
 
   console.log(status);//use status n data to try the update operation
   
-
   return (
     <>
-    {/* <div>
-      <div>
-        <input value={room} onChange={(e) => setRoom(e.target.value)} placeholder="Room" />
-        <input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
-        <button onClick={handleJoin}>Join Room</button>
-      </div>
-      <div>
-        <ul>
-          {userList.map((user) => (
-            <li key={user}>{user}</li>
-          ))}
-        </ul>
-      </div>
-      <div>
-        {messages.map((message) => (
-          <div key={message.id}>
-            <b>{message.username}:</b> {message.content}
-          </div>
-        ))}
-      </div>
-      <div>
-        <input value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Message" />
-        <button onClick={handleMessageSend}>Send</button>
-      </div>
-    </div> */}
     <Header />
     {/* <input type="text" placeholder="Enter recipient id" onChange={(e)=>setRecipientId(e.target.value)}/> */}
     <div className='chat__overall__container'>
-      <SideBar receiverId={receiverId} setReceiverId={setReceiverId} activeUser={activeUser} setMessages={setMessages} receivedMessages={messages} usersList={usersList} setUsersList={setUsersList} getAllMessages={getAllMessages} setGetAllMessages={setGetAllMessages} />
+      <SideBar receiverId={receiverId} setReceiverId={setReceiverId} activeUser={activeUser} setMessages={setMessages} receivedMessages={messages} usersList={usersList} setUsersList={setUsersList} getAllMessages={getAllMessages} setGetAllMessages={setGetAllMessages} activeNames={activeNames} setActiveNames={setActiveNames} messageStatus={messageStatus} setMessageStatus={setMessageStatus} />
       <div className="container" >
-      <span className='chatbox__sender'>To: Bunmi Oladipupo</span>
+      <span className='chatbox__sender'>To: {activeNames ? activeNames : ""}</span>
       <div className="chat-container" >
+        
         {/* message chat starts */}
         <div ref={chatContainerRef}>
-          {messages && messages.map(message => (
+        {
+          !messageStatus ?
+          <div className="chat__nochat">
+            <div>
+              <span>Click on a user to chat</span>
+            </div>
+            <div>
+              <img src="/chat.png" alt="no user found"/>
+            </div>
+          </div>
+       :
+       messages && messages.map(message => (
             <div key={message.id} className={`${message.senderId !== testId? "chat-message" : "chat-message user"}`}>
             <div className={`${message.senderId !== testId? "chat-message__wrapper" : "chat-message__wrapper__chat-user"}`}>
-              <p className="small text-muted">{`${message.senderId === testId? "You" : `${usersList[0]? usersList[0].user.firstName : ""} ${usersList[0]? usersList[0].user.lastName : ""}`} - ${usersList[0]?today(usersList[0].user.createdAt)? new Date(usersList[0].user.createdAt).toLocaleString('en-us', timeFormatOptions) : new Date(usersList[0].user.createdAt).toLocaleString('en-us', dateFormatOptions) : ""}`}</p>
+              <p className="small text-muted">{`${message.senderId === testId? "You" : `${activeNames}`} - ${message? today(message.createdAt)? new Date(message.createdAt).toLocaleString('en-us', timeFormatOptions) : new Date(message.createdAt).toLocaleString('en-us', dateFormatOptions) : ""}`}</p>
               <p>{message.message? message.message : message.content}</p>
             </div>
           </div>
@@ -267,7 +255,7 @@ const ChatBox = () => {
       </div>
       {/* message chat ends */}
       <form className="message-form">
-        <input ref={inputRef} type="text" placeholder="Type your message here..." onChange={(e)=> setMessage(e.target.value)} value={message}/>
+        <input ref={inputRef} type="text" placeholder="Type your message here..." onChange={(e)=> setMessage(e.target.value)} value={message} readOnly={!messageStatus}/>
         <button type="submit" onClick={(e)=>handleMessageSend(e)}>
           <img src="/send.png" alt="send message" className='chat__send__icon'/>
         </button>
@@ -278,4 +266,4 @@ const ChatBox = () => {
   );
 };
 
-export default ChatBox;
+export default React.memo(ChatBox);
