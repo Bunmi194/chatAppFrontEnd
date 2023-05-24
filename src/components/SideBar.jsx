@@ -30,6 +30,12 @@ const SideBar = ({ receiverId, setReceiverId, activeUser, setMessages, receivedM
     //make fetchmessages run on every click to update messages with what's in the database
     console.log("user: ", myUsers);
     console.log("messages Update: ", messages);
+    if(!messages){
+      setReceiverId(myUsers);
+    setActiveNames(`${firstName} ${lastName}`);
+    setMessageStatus(true);
+      return setMessages([]);
+    }
     console.log("getAllMessages Update: ", getAllMessages);
     setReceiverId(myUsers);
     setActiveNames(`${firstName} ${lastName}`);
@@ -107,6 +113,7 @@ const SideBar = ({ receiverId, setReceiverId, activeUser, setMessages, receivedM
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
+        "authorization": `Bearer ${JSON.parse(localStorage.getItem("userDetails")).token}`
       },
       body: JSON.stringify(searchObject),
     });

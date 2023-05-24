@@ -45,7 +45,12 @@ const ChatBox = () => {
   let newUserId;
   let userDetails;
   let id;
+
+  userDetails = localStorage.getItem('userDetails');
+  console.log("userDetailsNEWLOGIN: ", userDetails);
   console.log("receiverId: ", receiverId);
+  
+  
   useEffect(()=>{
 
     const connectDetails = connectedUsersSocketDetails.find(user => user.userId === receiverId);

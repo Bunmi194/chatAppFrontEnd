@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from "react-router-dom";
 import { css } from '@emotion/react';
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
@@ -9,12 +9,50 @@ const override = css`
   margin: 0 auto;
   border-color: red;
 `;
-function LoginPage() {
+function LoginPage({setUserAccess}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [ isLoading, setIsLoading ] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
+
+  const params = new URLSearchParams(location.search);
+  const token = params.get('token');
+  const googleEmail = params.get('email');
+  const firstName = params.get('firstName');
+  const lastName = params.get('lastName');
+  const id = params.get('id');
+
+  useEffect(()=>{
+    if(token && googleEmail && firstName && lastName && id) {
+      googleLoginOrSignup();
+    }
+  }, []);
+
+  const handleGoogleLogin = () => {
+    window.open("http://localhost:4000/v1/strategy/auth/google", "_self");
+  }
+  const googleLoginOrSignup = () => {
+    const userObject = {
+      token,
+      userExists: [
+        {
+          email: googleEmail,
+          firstName,
+          lastName,
+          _id: id,
+        }
+      ]
+    };
+
+    console.log("userObject: ", userObject);
+
+    localStorage.setItem("userDetails", JSON.stringify(userObject));
+    setUserAccess(true);
+    window.location.reload();
+
+  }
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -48,6 +86,7 @@ function LoginPage() {
     };
     setIsLoading(false);
     localStorage.setItem("userDetails", JSON.stringify(result));
+    setUserAccess(true);
     toast.success(`${result.message}`, {
       position: toast.POSITION.TOP_RIGHT
     })
@@ -56,6 +95,7 @@ function LoginPage() {
     }, 4000);
     return;
   };
+
   return (
     <div className="login-container">
       <div className="login-image"></div>
@@ -85,7 +125,7 @@ function LoginPage() {
           </div>
           <div className='chat__line__div'></div>
         </div>
-        <button type="submit" onClick={handleLogin} className="chat__btnlogin__google">Continue with Google</button>
+        <button type="submit" onClick={handleGoogleLogin} className="chat__btnlogin__google">Continue with Google</button>
         <div>
           <p className='chat__redirect__text'>Don't have an account? <a href="/register">Sign Up</a></p>
         </div>
