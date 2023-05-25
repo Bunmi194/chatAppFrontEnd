@@ -229,7 +229,7 @@ const SideBar = ({ receiverId, setReceiverId, activeUser, setMessages, receivedM
                 {/* image */}
 
                 <img
-                  src="/profile.jpg"
+                  src="/user.png"
                   alt="profile"
                   className="chat__profile__image"
                 />

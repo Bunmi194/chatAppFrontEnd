@@ -5,4 +5,40 @@
     align-items: flex-start;
     padding: 0.3rem 10rem;
     border-bottom: 10px solid #eee;
+    height: 100px;
+}
+.chat__header__logo{
+    width: 30px;
+    height: 30px;
+}
+.header__name{
+    display: flex;
+    flex-direction: row;
+}
+.chat__header__username{
+    margin-top: 2rem;
+    font-weight: bold;
+}
+.chat__header__usernametext{
+    margin-right: 10px;
+}
+.chat__header__dropdown{
+    display: flex;
+    flex-direction: column;
+    justify-content: right;
+    align-items: flex-end;
+}
+.chat__header__dropdown__hide{
+    display: none;
+}
+.chat__header__dropdown__show{
+    display: block;
+    position: relative;
+    bottom: auto;
+}
+.chat__header__dropdownbtn{
+    width: 20px !important;
+    height: 20px !important;
+    margin: 0;
+    padding: 0;
 }

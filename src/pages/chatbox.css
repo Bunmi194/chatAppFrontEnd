@@ -5,8 +5,9 @@
     margin: 0 auto;
     padding: 20px;
     max-width: 70%;
-    height: 80vh;
-    border: 2px solid red;
+    height: 75vh;
+    border: 10px solid #EEEEEE;
+    border-top: none;
   }
   .chat__nochat{
     display: flex;
@@ -31,6 +32,10 @@
   justify-content: space-between;
   align-items: center;
  } 
+ .white{
+  color: rgb(205, 198, 198) !important;
+  font-weight: 400;
+ }
   .chatbox__sender{
     display: inline-block;
     margin-bottom: 0.5rem;
@@ -57,14 +62,12 @@
   }
   
   .chat-container {
-    background-color: #f8f8f8;
+    background-color: #b4acac;
     padding: 20px;
     border-radius: 5px;
-    height: 400px;
     overflow-y: scroll;
     margin-bottom: 20px;
-    min-height: 60vh;
-    max-height: 60vh;
+    height: 55vh;
   }
   
   .chat-message {

@@ -50,7 +50,8 @@ function LoginPage({setUserAccess}) {
 
     localStorage.setItem("userDetails", JSON.stringify(userObject));
     setUserAccess(true);
-    window.location.reload();
+    window.open('/chat', "_self");
+    return;
 
   }
   const handleLogin = async (e) => {

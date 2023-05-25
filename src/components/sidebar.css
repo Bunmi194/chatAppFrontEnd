@@ -1,9 +1,10 @@
 .chat__sidebar{
-    border: 1px solid red;
     height: 80vh;
-    width: 30%;
-    padding: 20px;
+    width: 28%;
+    padding: 5px 20px;
     position: fixed;
+    overflow-y: scroll;
+    overflow-x: scroll;
 }
 .chat__sidebar__spinner{
     display: flex;
@@ -42,7 +43,8 @@
 .chat__list__wrapper{
     display: flex;
     flex-direction: column;
-    border: 1px solid red;
+    overflow-y: scroll;
+    overflow-x: scroll;
 }
 .chat__messages__sent__wrapper{
     display: flex;
@@ -51,7 +53,9 @@
     align-items: center;
     margin: 0.5rem 0;
     cursor: pointer;
-    border: 1px solid red;
+    border: 2px solid #80D495;
+    padding: 10px;
+    border-radius: 10px;
 }
 .chat__message__user__info{
     display: flex;

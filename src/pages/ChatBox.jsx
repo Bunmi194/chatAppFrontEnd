@@ -187,13 +187,6 @@ const ChatBox = () => {
   };
 
 
-  console.log("messages: ", messages);
-  const testId = JSON.parse(localStorage.getItem('userDetails')).userExists[0]._id;
-  console.log("testId: ", testId);
-  console.log("usersList: ", usersList);
-  console.log("getAllMessages: ", getAllMessages);
-
-  console.log(status);//use status n data to try the update operation
   
   return (
     <>
@@ -219,9 +212,9 @@ const ChatBox = () => {
           </div>
        :
        messages && messages.map(message => (
-            <div key={message.id} className={`${message.senderId !== testId? "chat-message" : "chat-message user"}`}>
-            <div className={`${message.senderId !== testId? "chat-message__wrapper" : "chat-message__wrapper__chat-user"}`}>
-              <p className="small text-muted">{`${message.senderId === testId? "You" : `${activeNames}`} - ${message? today(message.createdAt)? new Date(message.createdAt).toLocaleString('en-us', timeFormatOptions) : new Date(message.createdAt).toLocaleString('en-us', dateFormatOptions) : ""}`}</p>
+            <div key={message.id} className={`${message.senderId !== JSON.parse(localStorage.getItem('userDetails')).userExists[0]._id? "chat-message" : "chat-message user"}`}>
+            <div className={`${message.senderId !== JSON.parse(localStorage.getItem('userDetails')).userExists[0]._id? "chat-message__wrapper" : "chat-message__wrapper__chat-user"}`}>
+              <p className={`small text-muted ${message.senderId === JSON.parse(localStorage.getItem('userDetails')).userExists[0]._id? "white" : "black"}`}>{`${message.senderId === JSON.parse(localStorage.getItem('userDetails')).userExists[0]._id? "You" : `${activeNames}`} - ${message? today(message.createdAt)? new Date(message.createdAt).toLocaleString('en-us', timeFormatOptions) : new Date(message.createdAt).toLocaleString('en-us', dateFormatOptions) : ""}`}</p>
               <p>{message.message? message.message : message.content}</p>
             </div>
           </div>
