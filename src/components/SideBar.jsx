@@ -121,7 +121,7 @@ const SideBar = ({ receiverId, setReceiverId, activeUser, setMessages, receivedM
     console.log("result: ", result);
     console.log("usersList: ", usersList);
     if (!result || result.status !== "success") {
-      toast.error(`Error: ${result.status}`, {
+      toast.error(`Error: ${result.message}`, {
         position: toast.POSITION.TOP_RIGHT,
       });
       setSearchLoading(false);

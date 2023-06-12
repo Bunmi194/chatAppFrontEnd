@@ -5,6 +5,7 @@ import "./header.css";
 
 const Header = () => {
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+  console.log("userDetails: ", userDetails);
   const toggleRef = useRef(null);
   const navigate = useNavigate();
   const [ hideToggle, setHideToggle ] = useState(false);

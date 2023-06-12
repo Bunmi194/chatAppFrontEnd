@@ -35,6 +35,8 @@ function LoginPage({setUserAccess}) {
   }
   const googleLoginOrSignup = () => {
     const userObject = {
+      status: "success",
+      message: "Login successful",
       token,
       userExists: [
         {
@@ -42,6 +44,7 @@ function LoginPage({setUserAccess}) {
           firstName,
           lastName,
           _id: id,
+          isVerified: true,
         }
       ]
     };
