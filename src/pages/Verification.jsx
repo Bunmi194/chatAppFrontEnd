@@ -21,28 +21,35 @@ const Verification = () => {
     const token = new URLSearchParams(window.location.search).get('token');
     console.log("token: ", token);
     const verifyUserAccount = async () => {
-      if(!token){
-        navigate('/');
-      }
-      const verify = await fetch(`http://localhost:4000/v1/users/verify/${token}`, {
-        method: "GET",
-        headers: {
-          "Access-Control-Allow-Origin": "*"
-        },
-      });
-      const result = await verify.json();
-      console.log("result: ", result);
-      if(result && result.status === "success"){
-        setVerifying(false);
-        toast.success(`${result.message}`, {
+      try {
+        if(!token){
+          navigate('/');
+        }
+        const verify = await fetch(`http://localhost:4000/v1/users/verify/${token}`, {
+          method: "GET",
+          headers: {
+            "Access-Control-Allow-Origin": "*"
+          },
+        });
+        const result = await verify.json();
+        console.log("result: ", result);
+        if(result && result.status === "success"){
+          setVerifying(false);
+          toast.success(`${result.message}`, {
+            position: toast.POSITION.TOP_RIGHT
+          });
+          return result;
+        }
+        setFailed(true);
+        toast.error(`Error: ${result.message}`, {
           position: toast.POSITION.TOP_RIGHT
         });
-        return result;
+      } catch (error) {
+        setVerifying(false);
+        toast.error(`Error: Internal Server Error`, {
+          position: toast.POSITION.TOP_RIGHT
+        });
       }
-      setFailed(true);
-      toast.error(`Error: ${result.message}`, {
-        position: toast.POSITION.TOP_RIGHT
-      });
     }
 
     useEffect(()=>{

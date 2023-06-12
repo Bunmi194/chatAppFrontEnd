@@ -19,7 +19,7 @@ function App() {
     setUserAccess(userDetails);
   }
   console.log("userDetailsINAPP: ", userDetails);
-  }, [])
+  }, []);
   return (
     <div>
       <ToastContainer />

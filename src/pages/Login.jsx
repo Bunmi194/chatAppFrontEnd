@@ -55,7 +55,8 @@ function LoginPage({setUserAccess}) {
 
   }
   const handleLogin = async (e) => {
-    e.preventDefault();
+    try {
+      e.preventDefault();
     setIsLoading(true);
     if(!email || !password) { 
       setIsLoading(false);
@@ -95,6 +96,13 @@ function LoginPage({setUserAccess}) {
       navigate('/chat');
     }, 4000);
     return;
+    } catch (error) {
+      console.log("Error: " + error)
+      setIsLoading(false);
+      toast.error(`Error: Internal Server Error`, {
+        position: toast.POSITION.TOP_RIGHT
+      })
+    }
   };
 
   return (
