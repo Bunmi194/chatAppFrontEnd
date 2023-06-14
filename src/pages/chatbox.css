@@ -1,4 +1,4 @@
-/* ChatGPT UI styles */
+
 .container {
     min-width: 60%;
     margin-left: 32% !important;
@@ -133,4 +133,21 @@
 }
 .white{
   color: #fff;
+}
+@media screen and (max-width: 768px){
+  ::placeholder{
+    font-size: 9px;
+    font-weight: 600;
+  }
+  .container {
+    margin: auto !important;
+    padding: 20px;
+    width: inherit !important;
+    height: 75vh;
+    border-top: none;
+  }
+
+ .chat__overall__container{
+  display: block;
+ } 
 }

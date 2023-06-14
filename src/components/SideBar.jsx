@@ -21,13 +21,14 @@ const override = css`
   border-color: red;
 `;
 
-const SideBar = ({ receiverId, setReceiverId, activeUser, setMessages, receivedMessages, usersList, setUsersList, getAllMessages, setGetAllMessages, activeNames, setActiveNames, messageStatus, setMessageStatus }) => {
+const SideBar = ({ receiverId, setReceiverId, activeUser, setMessages, receivedMessages, usersList, setUsersList, getAllMessages, setGetAllMessages, activeNames, setActiveNames, messageStatus, setMessageStatus, sidebarToggle, setSidebarToggle }) => {
   const [searchEmail, setSearchEmail] = useState("");
   const [ searchLoading, setSearchLoading] = useState(false);
   let userDetails;
   
   const updateReceiverDetails = async (myUsers, messages, firstName, lastName) => {
     //make fetchmessages run on every click to update messages with what's in the database
+    setSidebarToggle(false);
     console.log("user: ", myUsers);
     console.log("messages Update: ", messages);
     if(!messages){
@@ -193,8 +194,9 @@ const SideBar = ({ receiverId, setReceiverId, activeUser, setMessages, receivedM
   console.log("usersList: ", usersList);
   console.log("receivedMessages: ", receivedMessages);
   console.log("createdAt1: ", receivedMessages[receivedMessages.length - 1]);
+  console.log("sidebarToggle: ", sidebarToggle)
   return (
-    <div className="chat__sidebar">
+    <div className={`chat__sidebar ${sidebarToggle? "chat__sidebar__show" : "chat__sidebar__hide"}`}>
       <input
         type="text"
         placeholder="Search for a user..."

@@ -92,3 +92,35 @@
     color: #80D495;
     font-weight: 500;
 }
+@media screen and (max-width: 768px) {
+    .chat__sidebar__show{
+        display: block !important;
+        width: 100%;
+        padding-right: 10%;
+        background-color: #1e4b6e;
+    }
+    .chat__sidebar__hide{
+        display: none;
+    }
+    .chat__sidebar{
+        width: 80%;
+        position: absolute;
+        top: 120px;
+        left: 0;
+        border: 5px solid rgb(6, 17, 63);
+        border-left: none;
+    }
+       
+    .chat__profile__image{
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin: 0.5rem 0;
+    }
+     
+    .chat__messages__sent__wrapper{
+        width: 70%;
+        padding: 0 20px;
+    }
+}
+ 

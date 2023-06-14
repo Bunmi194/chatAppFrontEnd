@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from 'react';
 import "./header.css";
 
-const Header = () => {
+const Header = ({ sidebarToggle, setSidebarToggle }) => {
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   console.log("userDetails: ", userDetails);
   const toggleRef = useRef(null);
@@ -12,6 +12,7 @@ const Header = () => {
   const userName = userDetails? `${userDetails.userExists[0].firstName} ${userDetails.userExists[0].lastName}`: "";
 
   const toggleDropdown = (event) => {
+    closeSidebar();
     setHideToggle(prev => !prev);
     console.log("toggleRef.current: ", toggleRef.current)
     console.log("event: ", event.target);
@@ -27,11 +28,19 @@ const Header = () => {
     window.open('/', "_self");
   };
 
+  const toggleSidebar = () => {
+    setSidebarToggle(true);
+    setHideToggle(false);
+  }
+
+  const closeSidebar = () => {
+    setSidebarToggle(false);
+  };
   return (
     <div className='header__wrapper'>
         <div className='header__name'>
             <div>
-              <h1>ChatBox</h1>
+              <h1 className='header__text'>ChatBox</h1>
             </div>
             <div>
               <img src='/logo.png' alt="app logo" className='chat__header__logo'/>
@@ -48,6 +57,13 @@ const Header = () => {
             </div>
           </div>
         </div>
+        {
+          !sidebarToggle?
+          <label class={`${sidebarToggle? "hide" : "show"} hamb`} for="side-menu" onClick={toggleSidebar}><span class="hamb-line"></span></label>
+          :
+          <span onClick={closeSidebar} className="close__sidebar">X</span>
+        }
+        
     </div>
   )
 }

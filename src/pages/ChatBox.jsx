@@ -25,6 +25,7 @@ const today = (dateString) => {
 
 const ChatBox = () => {
 
+  const [ sidebarToggle, setSidebarToggle ] = useState(false);
   const [room, setRoom] = useState('');
   const [ status, setStatus] = useState(false);
   const [ messageStatus, setMessageStatus] = useState(false);
@@ -190,10 +191,10 @@ const ChatBox = () => {
   
   return (
     <>
-    <Header />
+    <Header setSidebarToggle={setSidebarToggle} sidebarToggle={sidebarToggle} />
     {/* <input type="text" placeholder="Enter recipient id" onChange={(e)=>setRecipientId(e.target.value)}/> */}
     <div className='chat__overall__container'>
-      <SideBar receiverId={receiverId} setReceiverId={setReceiverId} activeUser={activeUser} setMessages={setMessages} receivedMessages={messages} usersList={usersList} setUsersList={setUsersList} getAllMessages={getAllMessages} setGetAllMessages={setGetAllMessages} activeNames={activeNames} setActiveNames={setActiveNames} messageStatus={messageStatus} setMessageStatus={setMessageStatus} />
+      <SideBar receiverId={receiverId} setReceiverId={setReceiverId} activeUser={activeUser} setMessages={setMessages} receivedMessages={messages} usersList={usersList} setUsersList={setUsersList} getAllMessages={getAllMessages} setGetAllMessages={setGetAllMessages} activeNames={activeNames} setActiveNames={setActiveNames} messageStatus={messageStatus} setMessageStatus={setMessageStatus} setSidebarToggle={setSidebarToggle} sidebarToggle={sidebarToggle} />
       <div className="container" >
       <span className='chatbox__sender'>To: {activeNames ? activeNames : ""}</span>
       <div className="chat-container" >
