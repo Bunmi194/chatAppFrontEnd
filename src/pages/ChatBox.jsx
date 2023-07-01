@@ -63,7 +63,7 @@ const ChatBox = () => {
     console.log("recipientId: ", recipientId)
     // get user ID from local storage or generate a new one
     console.log("userDetails: ", userDetails);
-    newUserId = userDetails?.userExists[0]?._id;
+    newUserId = userDetails?.user[0]?._id;
     console.log("newUserId: ", newUserId);
   })
   useEffect(()=>{
@@ -147,7 +147,7 @@ const ChatBox = () => {
     const newMessage = {
       id: uuid(),
       createdAt: new Date().toISOString(),
-      senderId: userDetails.userExists[0]._id,
+      senderId: userDetails.user[0]._id,
       receiverId,
       message,
       content: message,
@@ -213,9 +213,9 @@ const ChatBox = () => {
           </div>
        :
        messages && messages.map(message => (
-            <div key={message.id} className={`${message.senderId !== JSON.parse(localStorage.getItem('userDetails')).userExists[0]._id? "chat-message" : "chat-message user"}`}>
-            <div className={`${message.senderId !== JSON.parse(localStorage.getItem('userDetails')).userExists[0]._id? "chat-message__wrapper" : "chat-message__wrapper__chat-user"}`}>
-              <p className={`small text-muted ${message.senderId === JSON.parse(localStorage.getItem('userDetails')).userExists[0]._id? "white" : "black"}`}>{`${message.senderId === JSON.parse(localStorage.getItem('userDetails')).userExists[0]._id? "You" : `${activeNames}`} - ${message? today(message.createdAt)? new Date(message.createdAt).toLocaleString('en-us', timeFormatOptions) : new Date(message.createdAt).toLocaleString('en-us', dateFormatOptions) : ""}`}</p>
+            <div key={message.id} className={`${message.senderId !== JSON.parse(localStorage.getItem('userDetails')).user[0]._id? "chat-message" : "chat-message user"}`}>
+            <div className={`${message.senderId !== JSON.parse(localStorage.getItem('userDetails')).user[0]._id? "chat-message__wrapper" : "chat-message__wrapper__chat-user"}`}>
+              <p className={`small text-muted ${message.senderId === JSON.parse(localStorage.getItem('userDetails')).user[0]._id? "white" : "black"}`}>{`${message.senderId === JSON.parse(localStorage.getItem('userDetails')).user[0]._id? "You" : `${activeNames}`} - ${message? today(message.createdAt)? new Date(message.createdAt).toLocaleString('en-us', timeFormatOptions) : new Date(message.createdAt).toLocaleString('en-us', dateFormatOptions) : ""}`}</p>
               <p>{message.message? message.message : message.content}</p>
             </div>
           </div>

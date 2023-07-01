@@ -65,7 +65,7 @@ function SignupPage() {
         });
         return;
       };
-      localStorage.setItem("userDetails", JSON.stringify(email));
+      localStorage.setItem("userEmail", JSON.stringify(email));
       setEmail("");
       setPassword("");
       setLastName("");

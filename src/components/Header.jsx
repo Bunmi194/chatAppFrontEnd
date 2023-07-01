@@ -9,7 +9,7 @@ const Header = ({ sidebarToggle, setSidebarToggle }) => {
   const toggleRef = useRef(null);
   const navigate = useNavigate();
   const [ hideToggle, setHideToggle ] = useState(false);
-  const userName = userDetails? `${userDetails.userExists[0].firstName} ${userDetails.userExists[0].lastName}`: "";
+  const userName = userDetails? `${userDetails.user[0].firstName} ${userDetails.user[0].lastName}`: "";
 
   const toggleDropdown = (event) => {
     closeSidebar();
@@ -59,7 +59,7 @@ const Header = ({ sidebarToggle, setSidebarToggle }) => {
         </div>
         {
           !sidebarToggle?
-          <label class={`${sidebarToggle? "hide" : "show"} hamb`} for="side-menu" onClick={toggleSidebar}><span class="hamb-line"></span></label>
+          <label className={`${sidebarToggle? "hide" : "show"} hamb`} htmlFor="side-menu" onClick={toggleSidebar}><span className="hamb-line"></span></label>
           :
           <span onClick={closeSidebar} className="close__sidebar">X</span>
         }

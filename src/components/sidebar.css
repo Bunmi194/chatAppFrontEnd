@@ -96,14 +96,15 @@
     .chat__sidebar__show{
         display: block !important;
         width: 100%;
-        padding-right: 10%;
+        padding-right: 1%;
         background-color: #1e4b6e;
     }
     .chat__sidebar__hide{
         display: none;
     }
     .chat__sidebar{
-        width: 80%;
+        min-width: 200px;
+        max-width: 270px;
         position: absolute;
         top: 120px;
         left: 0;

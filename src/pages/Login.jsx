@@ -38,7 +38,7 @@ function LoginPage({setUserAccess}) {
       status: "success",
       message: "Login successful",
       token,
-      userExists: [
+      user: [
         {
           email: googleEmail,
           firstName,

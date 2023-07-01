@@ -13,8 +13,8 @@ const Success = () => {
           }
     }
     useEffect(()=>{
-      localStorage.getItem("userDetails") ?
-      mail = JSON.parse(localStorage.getItem("userDetails"))
+      localStorage.getItem("userEmail") ?
+      mail = JSON.parse(localStorage.getItem("userEmail"))
       :
       mail = "sample@gmail.com";
     }, []);
