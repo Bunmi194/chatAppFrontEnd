@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import "./sidebar.css";
 import { css } from "@emotion/react";
 import { ClipLoader } from "react-spinners";
@@ -144,6 +144,7 @@ const SideBar = ({ receiverId, setReceiverId, activeUser, setMessages, receivedM
   useEffect(()=>{
     //senderId
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     userDetails = JSON.parse(localStorage.getItem('userDetails'));
     if(activeUser.senderId){
       console.log("ID: ", activeUser.senderId)
@@ -189,6 +190,7 @@ const SideBar = ({ receiverId, setReceiverId, activeUser, setMessages, receivedM
     //fetch all messages
     fetchmessages();
     
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userDetails]);
 
   console.log("usersList: ", usersList);

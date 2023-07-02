@@ -1,13 +1,10 @@
 import React, { useState, useRef } from 'react';
-import { useNavigate } from "react-router-dom";
-import { useEffect } from 'react';
 import "./header.css";
 
 const Header = ({ sidebarToggle, setSidebarToggle }) => {
   const userDetails = JSON.parse(localStorage.getItem("userDetails"));
   console.log("userDetails: ", userDetails);
   const toggleRef = useRef(null);
-  const navigate = useNavigate();
   const [ hideToggle, setHideToggle ] = useState(false);
   const userName = userDetails? `${userDetails.user[0].firstName} ${userDetails.user[0].lastName}`: "";
 

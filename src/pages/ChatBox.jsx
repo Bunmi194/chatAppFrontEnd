@@ -26,11 +26,10 @@ const today = (dateString) => {
 const ChatBox = () => {
 
   const [ sidebarToggle, setSidebarToggle ] = useState(false);
-  const [room, setRoom] = useState('');
+  // eslint-disable-next-line no-unused-vars
   const [ status, setStatus] = useState(false);
   const [ messageStatus, setMessageStatus] = useState(false);
   const [ activeNames, setActiveNames] = useState('');
-  const [username, setUsername] = useState(''); 
   const [usersList, setUsersList] = useState([]);
   const [message, setMessage] = useState('');
   const [ activeUser, setActiveUser ] = useState({});
@@ -45,7 +44,6 @@ const ChatBox = () => {
   const userIdRef = useRef(null);
   let newUserId;
   let userDetails;
-  let id;
 
   userDetails = localStorage.getItem('userDetails');
   console.log("userDetailsNEWLOGIN: ", userDetails);
@@ -63,6 +61,7 @@ const ChatBox = () => {
     console.log("recipientId: ", recipientId)
     // get user ID from local storage or generate a new one
     console.log("userDetails: ", userDetails);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     newUserId = userDetails?.user[0]?._id;
     console.log("newUserId: ", newUserId);
   })
@@ -118,11 +117,13 @@ const ChatBox = () => {
       socket.current.emit('join', newUserId);
     }
     return ()=>{
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       socket.current.off(`message:${userIdRef.current}`, (data) => {
         console.log(`Message received: ${data.content}`);
         // handle the incoming message
       });
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); 
 
   // const sendMessage = () => {
