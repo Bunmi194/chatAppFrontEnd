@@ -9,6 +9,8 @@ const override = css`
   margin: 0 auto;
   border-color: red;
 `;
+const BASEURL = process.env.REACT_APP_BASEURL;
+
 function LoginPage({setUserAccess}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -32,7 +34,7 @@ function LoginPage({setUserAccess}) {
   }, []);
 
   const handleGoogleLogin = () => {
-    window.open("http://localhost:4000/v1/strategy/auth/google", "_self");
+    window.open(`${BASEURL}/v1/strategy/auth/google`, "_self");
   }
   const googleLoginOrSignup = () => {
     const userObject = {
@@ -69,7 +71,7 @@ function LoginPage({setUserAccess}) {
       });
       return;
     }
-    const login = await fetch("http://localhost:4000/v1/users/login", {
+    const login = await fetch(`${BASEURL}/v1/users/login`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",

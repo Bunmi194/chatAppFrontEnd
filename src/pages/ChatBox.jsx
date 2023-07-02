@@ -22,7 +22,7 @@ const today = (dateString) => {
 };
 
 // const socket = io('http://localhost:4000');
-
+const BASEURL = process.env.REACT_APP_BASEURL
 const ChatBox = () => {
 
   const [ sidebarToggle, setSidebarToggle ] = useState(false);
@@ -67,7 +67,7 @@ const ChatBox = () => {
   })
   useEffect(()=>{
     
-    socket.current = io('http://localhost:4000');
+    socket.current = io(`${BASEURL}`);
     console.log("socket: ", socket.current);
   }, []);
   
@@ -163,7 +163,7 @@ const ChatBox = () => {
     setMessage("");
     socket.current.emit('message', newMessage);
     const token = userDetails.token;
-    fetch("http://localhost:4000/v1/chats", {
+    fetch(`${BASEURL}/v1/chats`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",

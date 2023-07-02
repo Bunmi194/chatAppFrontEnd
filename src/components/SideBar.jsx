@@ -20,7 +20,7 @@ const override = css`
   margin: 0 auto;
   border-color: red;
 `;
-
+const BASEURL = process.env.REACT_APP_BASEURL;
 const SideBar = ({ receiverId, setReceiverId, activeUser, setMessages, receivedMessages, usersList, setUsersList, getAllMessages, setGetAllMessages, activeNames, setActiveNames, messageStatus, setMessageStatus, sidebarToggle, setSidebarToggle }) => {
   const [searchEmail, setSearchEmail] = useState("");
   const [ searchLoading, setSearchLoading] = useState(false);
@@ -50,7 +50,7 @@ const SideBar = ({ receiverId, setReceiverId, activeUser, setMessages, receivedM
 
     if(userDetails){
       const token = userDetails.token;
-      const messages = await fetch(`http://localhost:4000/v1/chats`, {
+      const messages = await fetch(`${BASEURL}/v1/chats`, {
         method: 'GET',
         headers: {
           "Content-Type": "application/json",
@@ -109,7 +109,7 @@ const SideBar = ({ receiverId, setReceiverId, activeUser, setMessages, receivedM
       setSearchLoading(false);
       return;
     }
-    const users = await fetch("http://localhost:4000/v1/users/search", {
+    const users = await fetch(`${BASEURL}/v1/users/search`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -161,7 +161,7 @@ const SideBar = ({ receiverId, setReceiverId, activeUser, setMessages, receivedM
   const fetchmessages = async () => {
     if(userDetails){
       const token = userDetails.token;
-      const messages = await fetch(`http://localhost:4000/v1/chats`, {
+      const messages = await fetch(`${BASEURL}/v1/chats`, {
         method: 'GET',
         headers: {
           "Content-Type": "application/json",
