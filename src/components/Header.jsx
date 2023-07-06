@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import "./header.css";
 
 const Header = ({ sidebarToggle, setSidebarToggle }) => {
-  const userDetails = JSON.parse(localStorage.getItem("userDetails"));
+  const userDetails = JSON.parse(localStorage.getItem("userDetails__chat__app"));
   console.log("userDetails: ", userDetails);
   const toggleRef = useRef(null);
   const [ hideToggle, setHideToggle ] = useState(false);
@@ -17,10 +17,10 @@ const Header = ({ sidebarToggle, setSidebarToggle }) => {
   }
   
   const handleLogout = () => {
-    const userDetails = localStorage.getItem('userDetails');
+    const userDetails = localStorage.getItem('userDetails__chat__app');
     
     if (userDetails) {
-      localStorage.removeItem('userDetails');
+      localStorage.removeItem('userDetails__chat__app');
     }
     window.open('/', "_self");
   };
