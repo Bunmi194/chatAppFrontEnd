@@ -45,7 +45,7 @@ const ChatBox = () => {
   let newUserId;
   let userDetails;
 
-  userDetails = localStorage.getItem('userDetails');
+  userDetails = localStorage.getItem('userDetails__chat__app');
   console.log("userDetailsNEWLOGIN: ", userDetails);
   console.log("receiverId: ", receiverId);
   
@@ -79,7 +79,7 @@ const ChatBox = () => {
       inline: 'nearest'
     })
   }, [messages])
-  userDetails = JSON.parse(localStorage.getItem('userDetails'));
+  userDetails = JSON.parse(localStorage.getItem('userDetails__chat__app'));
   useEffect(() => {
     // listen for incoming messages
     socket.current.on(`message:${userIdRef.current}`, (data) => {
@@ -139,7 +139,8 @@ const ChatBox = () => {
   // };
 
   const handleMessageSend = async (e) => {
-    e.preventDefault();
+    try {
+      e.preventDefault();
     console.log("messages: ", messages);
     console.log("message: ", message);
     if(!message){
@@ -177,6 +178,7 @@ const ChatBox = () => {
         delivered: false
       })
     });
+
     // if (message) {
     //   const data = {
     //     room,
@@ -186,6 +188,12 @@ const ChatBox = () => {
     //   socket.emit('message', data);
     //   setMessage('');
     // }
+    } catch (error) {
+      if (userDetails) {
+        localStorage.removeItem('userDetails__chat__app');
+      }
+      window.open('/', "_self");
+    }
   };
 
 
@@ -214,9 +222,9 @@ const ChatBox = () => {
           </div>
        :
        messages && messages.map(message => (
-            <div key={message.id} className={`${message.senderId !== JSON.parse(localStorage.getItem('userDetails')).user[0]._id? "chat-message" : "chat-message user"}`}>
-            <div className={`${message.senderId !== JSON.parse(localStorage.getItem('userDetails')).user[0]._id? "chat-message__wrapper" : "chat-message__wrapper__chat-user"}`}>
-              <p className={`small text-muted ${message.senderId === JSON.parse(localStorage.getItem('userDetails')).user[0]._id? "white" : "black"}`}>{`${message.senderId === JSON.parse(localStorage.getItem('userDetails')).user[0]._id? "You" : `${activeNames}`} - ${message? today(message.createdAt)? new Date(message.createdAt).toLocaleString('en-us', timeFormatOptions) : new Date(message.createdAt).toLocaleString('en-us', dateFormatOptions) : ""}`}</p>
+            <div key={message.id} className={`${message.senderId !== JSON.parse(localStorage.getItem('userDetails__chat__app')).user[0]._id? "chat-message" : "chat-message user"}`}>
+            <div className={`${message.senderId !== JSON.parse(localStorage.getItem('userDetails__chat__app')).user[0]._id? "chat-message__wrapper" : "chat-message__wrapper__chat-user"}`}>
+              <p className={`small text-muted ${message.senderId === JSON.parse(localStorage.getItem('userDetails__chat__app')).user[0]._id? "white" : "black"}`}>{`${message.senderId === JSON.parse(localStorage.getItem('userDetails__chat__app')).user[0]._id? "You" : `${activeNames}`} - ${message? today(message.createdAt)? new Date(message.createdAt).toLocaleString('en-us', timeFormatOptions) : new Date(message.createdAt).toLocaleString('en-us', dateFormatOptions) : ""}`}</p>
               <p>{message.message? message.message : message.content}</p>
             </div>
           </div>

@@ -54,7 +54,7 @@ function LoginPage({setUserAccess}) {
 
     console.log("userObject: ", userObject);
 
-    localStorage.setItem("userDetails", JSON.stringify(userObject));
+    localStorage.setItem("userDetails__chat__app", JSON.stringify(userObject));
     setUserAccess(true);
     window.open('/chat', "_self");
     return;
@@ -93,7 +93,7 @@ function LoginPage({setUserAccess}) {
       return;
     };
     setIsLoading(false);
-    localStorage.setItem("userDetails", JSON.stringify(result));
+    localStorage.setItem("userDetails__chat__app", JSON.stringify(result));
     setUserAccess(true);
     toast.success(`${result.message}`, {
       position: toast.POSITION.TOP_RIGHT

@@ -14,7 +14,7 @@ function App() {
   const [ userAccess, setUserAccess ] = useState(false);
   
   useEffect(()=>{
-  const userDetails = localStorage.getItem('userDetails');
+  const userDetails = localStorage.getItem('userDetails__chat__app');
   if(userDetails){
     setUserAccess(userDetails);
   }
