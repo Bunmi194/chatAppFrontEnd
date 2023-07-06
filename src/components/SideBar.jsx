@@ -114,7 +114,7 @@ const SideBar = ({ receiverId, setReceiverId, activeUser, setMessages, receivedM
       headers: {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
-        "authorization": `Bearer ${JSON.parse(localStorage.getItem("userDetails")).token}`
+        "authorization": `Bearer ${JSON.parse(localStorage.getItem("userDetails__chat__app")).token}`
       },
       body: JSON.stringify(searchObject),
     });
@@ -145,7 +145,7 @@ const SideBar = ({ receiverId, setReceiverId, activeUser, setMessages, receivedM
     //senderId
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    userDetails = JSON.parse(localStorage.getItem('userDetails'));
+    userDetails = JSON.parse(localStorage.getItem('userDetails__chat__app'));
     if(activeUser.senderId){
       console.log("ID: ", activeUser.senderId)
       console.log("usersList in EFFECT: ", usersList);
